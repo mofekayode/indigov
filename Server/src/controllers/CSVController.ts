@@ -4,7 +4,7 @@ import { Parser } from 'json2csv';
 import * as fs from 'fs';
 import { parse } from 'fast-csv';
 
-type constituentType = { 
+type ConstituentType = { 
     email: string,
     first_name: string,
     last_name: string,
@@ -19,12 +19,12 @@ export const uploadCSV = async (req: Request, res: Response) => {
         }
     
         const filePath: string = req.file.path;
-        const jsonData: constituentType[] = [];
+        const jsonData: ConstituentType[] = [];
     
         fs.createReadStream(filePath)
             .pipe(parse({ headers: true }))
             .on('error', (error: Error) => {throw new Error(String(error));})
-            .on('data', (row: constituentType) => jsonData.push(row))
+            .on('data', (row: ConstituentType) => jsonData.push(row))
             .on('end', async () => {
                 fs.unlinkSync(filePath); 
                 const filteredData = jsonData.filter(row => 
