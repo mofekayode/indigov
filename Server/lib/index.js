@@ -14,13 +14,14 @@ const app = express();
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    if (token == null)
-        res.sendStatus(401);
-    console.log({ token });
+    if (token == null) {
+        return res.sendStatus(401); // Stops the middleware execution here
+    }
     jwt.verify(token, process.env.JWT_SECRET, (err) => {
-        if (err)
-            res.sendStatus(403);
-        next();
+        if (err) {
+            return res.sendStatus(403); // Stops the middleware execution here
+        }
+        next(); // Proceed only if there is no error
     });
 };
 app.use(cors());

@@ -14,15 +14,19 @@ import { ConstituentRoute, CSVRoute } from "./routes";
 const app = express();
 const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; 
-  
-    if (token == null) res.sendStatus(401); 
-    console.log({token})
-    jwt.verify(token!, process.env.JWT_SECRET as string, (err) => {
-      if (err) res.sendStatus(403); 
-      next();
+    const token = authHeader && authHeader.split(' ')[1];
+    if (token == null) {
+      return res.sendStatus(401); // Stops the middleware execution here
+    }
+    
+    jwt.verify(token, process.env.JWT_SECRET as string, (err) => {
+      if (err) {
+        return res.sendStatus(403); // Stops the middleware execution here
+      }
+      next(); // Proceed only if there is no error
     });
   };
+  
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));

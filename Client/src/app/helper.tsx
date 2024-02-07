@@ -1,7 +1,7 @@
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export const downloadConstituents = async (
   authenticationToken: string | null
 ) => {
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
   fetch(`${BASE_URL}/csv/download`, {
     method: "GET",
     headers: {
@@ -22,7 +22,6 @@ export const downloadConstituents = async (
 };
 
 export const getConstituents = async (authenticationToken: string | null) => {
-  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
   console.log({ BASE_URL });
   try {
     const response = await fetch(`${BASE_URL}/constituent`, {
@@ -44,3 +43,20 @@ export const getConstituents = async (authenticationToken: string | null) => {
     };
   }
 };
+
+export const getAutocompleteLocations = (query:string) => {
+    const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+    fetch(
+      `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${query}key=${API_KEY}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        let finalData = data.predictions.map((prediction:any) => {
+          const address = prediction.structured_formatting.secondary_text;
+          return {
+            address,
+          };
+        });
+        return finalData;
+      });
+  };

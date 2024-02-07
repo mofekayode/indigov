@@ -4,7 +4,7 @@ exports.deleteConstituent = exports.updateConstituent = exports.addConstituent =
 const index_1 = require("../index");
 const getConstituents = async (_, res) => {
     try {
-        let result = await index_1.db.query(`SELECT * FROM public.constituents;
+        let result = await index_1.db.query(`SELECT * FROM public.constituents ORDER BY created_at DESC;;
         `);
         res.status(200).json(result.rows);
     }

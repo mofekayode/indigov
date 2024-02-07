@@ -31,6 +31,10 @@ export const uploadCSV = async (req: Request, res: Response) => {
                     row.first_name && row.last_name && row.email && row.address
                 );
                 const successfulUploads = filteredData.length;
+                if (successfulUploads === 0) {
+                    res.status(400).send('No valid rows found in the CSV file.');
+                    return;
+                }
                 const totalRows = jsonData.length;
                 const message = `${successfulUploads} out of ${totalRows} rows were uploaded successfully.`;
                 for (const row of filteredData) {
@@ -62,7 +66,6 @@ export const downloadCSV = async (_: Request, res: Response) => {
             res.status(500).send(error.toString());
         } else {
             res.status(500).send('An unknown error occurred');
-            
         }
       }
 };

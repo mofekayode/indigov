@@ -21,6 +21,10 @@ const uploadCSV = async (req, res) => {
             fs.unlinkSync(filePath);
             const filteredData = jsonData.filter(row => row.first_name && row.last_name && row.email && row.address);
             const successfulUploads = filteredData.length;
+            if (successfulUploads === 0) {
+                res.status(400).send('No valid rows found in the CSV file.');
+                return;
+            }
             const totalRows = jsonData.length;
             const message = `${successfulUploads} out of ${totalRows} rows were uploaded successfully.`;
             for (const row of filteredData) {
