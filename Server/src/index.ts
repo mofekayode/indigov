@@ -16,15 +16,16 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     if (token == null) {
-      return res.sendStatus(401); // Stops the middleware execution here
+       res.sendStatus(401); // Stops the middleware execution here
+    }else{
+        jwt.verify(token, process.env.JWT_SECRET as string, (err) => {
+            if (err) {
+              res.sendStatus(403); // Stops the middleware execution here
+            }
+            next(); // Proceed only if there is no error
+          });
     }
     
-    jwt.verify(token, process.env.JWT_SECRET as string, (err) => {
-      if (err) {
-        return res.sendStatus(403); // Stops the middleware execution here
-      }
-      next(); // Proceed only if there is no error
-    });
   };
   
 
