@@ -50,7 +50,7 @@ export const db = new Client({
 });
 
 db.connect(function (err: Error) {
-  if (err) throw err;
+  if (err) console.log(err)
   console.log("Connected!");
 });
 

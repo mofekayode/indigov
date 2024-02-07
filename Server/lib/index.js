@@ -43,7 +43,7 @@ exports.db = new Client({
 });
 exports.db.connect(function (err) {
     if (err)
-        throw err;
+        console.log(err);
     console.log("Connected!");
 });
 app.listen(process.env.PORT, () => {
