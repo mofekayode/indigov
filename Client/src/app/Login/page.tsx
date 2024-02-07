@@ -13,12 +13,13 @@ export default function Login() {
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-amber-50" />
           <div className="relative z-20 flex items-center text-4xl font-bold text-black">
-           Indigov
+            Indigov
           </div>
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg text-black">
-                &ldquo;A next generation constituent experience management platform designed for government.&rdquo;
+                &ldquo;A next generation constituent experience management
+                platform designed for government.&rdquo;
               </p>
             </blockquote>
           </div>
