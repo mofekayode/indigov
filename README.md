@@ -1,10 +1,12 @@
 # indigov
 
-run these
+First run these commands to start the server
 
 ```bash
 nmp install
+
 # then
+
 npm start
 ```
 
