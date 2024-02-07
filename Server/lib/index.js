@@ -46,7 +46,6 @@ exports.db.connect(function (err) {
         console.log(err);
     console.log("Connected!");
 });
-app.listen(process.env.PORT, () => {
-    console.log("backend running");
-});
+let PORT = Number(process.env.PORT) || 9000;
+app.listen(PORT, '::', () => console.log('Listening on IPv6 address'));
 //# sourceMappingURL=index.js.map

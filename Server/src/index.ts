@@ -53,7 +53,6 @@ db.connect(function (err: Error) {
   if (err) console.log(err)
   console.log("Connected!");
 });
+let PORT = Number(process.env.PORT) || 9000;
+app.listen(PORT, '::', () => console.log('Listening on IPv6 address'));
 
-app.listen(process.env.PORT, () => {
-  console.log("backend running");
-});
