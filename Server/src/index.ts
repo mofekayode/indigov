@@ -1,8 +1,10 @@
 import * as express from "express";
+import { Request, Response, NextFunction } from 'express';
 import * as bodyParser from "body-parser";
 import * as cors from "cors";
 import * as pkg from "pg";
 import * as dotenv from "dotenv";
+import * as jwt from 'jsonwebtoken';
 dotenv.config();
 
 const { Client } = pkg;
@@ -10,10 +12,23 @@ const { Client } = pkg;
 import { ConstituentRoute, CSVRoute } from "./routes";
 
 const app = express();
+const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+  
+    if (token == null) return res.sendStatus(401); // No token
+  
+    jwt.verify(token, process.env.JWT_SECRET as string, (err: any) => {
+      if (err) return res.sendStatus(403); // Invalid token
+      next();
+    });
+  };
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(authenticateToken);
 app.use("/constituent", ConstituentRoute);
 app.use("/csv", CSVRoute);
 

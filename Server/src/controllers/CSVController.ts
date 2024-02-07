@@ -1,5 +1,62 @@
 import { Request, Response } from "express";
+import { db } from "../index";
+import { Parser } from 'json2csv';
+import * as fs from 'fs';
+import { parse } from 'fast-csv';
 
-export const uploadCSV = async (req: Request, res: Response) => {};
 
-export const downloadCSV = async (_: Request, res: Response) => {};
+export const uploadCSV = async (req: Request, res: Response) => {
+    try {
+        if (!req.file || !req.file.path) {
+            res.status(400).send('No file uploaded.');
+            return;
+        }
+    
+        const filePath: string = req.file.path;
+        const jsonData: Array<any> = [];
+    
+        fs.createReadStream(filePath)
+            .pipe(parse({ headers: true }))
+            .on('error', (error: any) => {throw new Error(error);})
+            .on('data', (row: object) => jsonData.push(row))
+            .on('end', async () => {
+                fs.unlinkSync(filePath); 
+                const filteredData = jsonData.filter(row => 
+                    row.first_name && row.last_name && row.email && row.address
+                );
+                const successfulUploads = filteredData.length;
+                const totalRows = jsonData.length;
+                const message = `${successfulUploads} out of ${totalRows} rows were uploaded successfully.`;
+                for (const row of filteredData) {
+                    await db.query(
+                        `INSERT INTO public.constituents (email, first_name, last_name, address) VALUES ($1, $2, $3, $4)
+                        ON CONFLICT (email) DO UPDATE SET first_name = EXCLUDED.first_name, last_name = EXCLUDED.last_name, address = EXCLUDED.address`,
+                        [row.email, row.first_name, row.last_name, row.address]
+                    );
+                }
+                res.status(200).send(message);
+            });
+            
+     
+      } catch (error) {
+        res.status(500).send('Error uploading file');
+      }
+};
+export const downloadCSV = async (_: Request, res: Response) => {
+    try {
+        const result = await db.query(`SELECT * FROM public.constituents;`);
+        const parser = new Parser();
+        const csv = parser.parse(result.rows); 
+    
+        res.header('Content-Type', 'text/csv');
+        res.attachment('constituents.csv');
+        res.send(csv);
+      } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).send(error.toString());
+        } else {
+            res.status(500).send('An unknown error occurred');
+            
+        }
+      }
+};
