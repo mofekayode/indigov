@@ -15,16 +15,18 @@ const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     if (token == null) {
-        res.sendStatus(401);
+        return res.sendStatus(401);
     }
     else {
         jwt.verify(token, process.env.JWT_SECRET, (err) => {
             if (err) {
-                res.sendStatus(403);
+                return res.sendStatus(403);
             }
             next();
+            return;
         });
     }
+    return;
 };
 // To allow specific origin:
 const corsOptions = {
