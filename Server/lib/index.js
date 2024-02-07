@@ -28,9 +28,16 @@ const authenticateToken = (req, res, next) => {
     }
     return;
 };
-// To allow specific origin:
 const corsOptions = {
-    origin: 'https://indigov-client-ejdcoplsj-mofekayode.vercel.app',
+    origin: function (origin, callback) {
+        const allowedOrigins = ['https://indigov-client-ejdcoplsj-mofekayode.vercel.app', 'https://indigov-client-ewmnc1s6c-mofekayode.vercel.app'];
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error('CORS policy violation'));
+        }
+    },
 };
 app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
