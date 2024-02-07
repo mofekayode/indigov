@@ -16,20 +16,25 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     if (token == null) {
-       res.sendStatus(401); // Stops the middleware execution here
+       res.sendStatus(401); 
     }else{
         jwt.verify(token, process.env.JWT_SECRET as string, (err) => {
             if (err) {
-              res.sendStatus(403); // Stops the middleware execution here
+              res.sendStatus(403);
             }
-            next(); // Proceed only if there is no error
+            next(); 
           });
     }
     
   };
   
 
-app.use(cors());
+  // To allow specific origin:
+  const corsOptions = {
+    origin: 'https://indigov-client-ejdcoplsj-mofekayode.vercel.app',
+  };
+  
+app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -45,13 +50,7 @@ const connectionString = `postgres://postgres.dmjdsqlkidxrlllqkjdd:${process.env
 export const db = new Client({
     connectionString: connectionString,
 });
-// export const db = new Client({
-//   user: process.env.DATABASE_NAME,
-//   host: process.env.DATABASE_HOST,
-//   database: process.env.DATABASE_NAME,
-//   password: process.env.DATABASE_PASSWORD,
-//   port: process.env.DATABASE_PORT as unknown as number,
-// });
+
 
 db.connect(function (err: Error) {
   if (err) console.log(err)
