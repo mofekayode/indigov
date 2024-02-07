@@ -34,13 +34,14 @@ app.use("/constituent", routes_1.ConstituentRoute);
 app.use("/csv", routes_1.CSVRoute);
 app.set("json spaces", 2);
 console.log(process.env.DATABASE_NAME);
-exports.db = new Client({
-    user: process.env.DATABASE_NAME,
-    host: process.env.DATABASE_HOST,
-    database: process.env.DATABASE_NAME,
-    password: process.env.DATABASE_PASSWORD,
-    port: process.env.DATABASE_PORT,
-});
+exports.db = new Client(`postgres://postgres.dmjdsqlkidxrlllqkjdd:${process.env.DATABASE_PASSWORD}@aws-0-us-west-1.pooler.supabase.com:5432/postgres`);
+// export const db = new Client({
+//   user: process.env.DATABASE_NAME,
+//   host: process.env.DATABASE_HOST,
+//   database: process.env.DATABASE_NAME,
+//   password: process.env.DATABASE_PASSWORD,
+//   port: process.env.DATABASE_PORT as unknown as number,
+// });
 exports.db.connect(function (err) {
     if (err)
         console.log(err);
