@@ -14,12 +14,12 @@ import { ConstituentRoute, CSVRoute } from "./routes";
 const app = express();
 const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+    const token = authHeader && authHeader.split(' ')[1]; 
   
-    if (token == null) return res.sendStatus(401); // No token
+    if (token == null) res.sendStatus(401); 
   
-    jwt.verify(token, process.env.JWT_SECRET as string, (err: any) => {
-      if (err) return res.sendStatus(403); // Invalid token
+    jwt.verify(token!, process.env.JWT_SECRET as string, (err) => {
+      if (err) res.sendStatus(403); 
       next();
     });
   };
@@ -44,7 +44,7 @@ export const db = new Client({
   port: process.env.DATABASE_PORT as unknown as number,
 });
 
-db.connect(function (err: any) {
+db.connect(function (err: Error) {
   if (err) throw err;
   console.log("Connected!");
 });

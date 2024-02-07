@@ -15,6 +15,9 @@ export const getConstituents = async (_: Request, res: Response) => {
 
 export const addConstituent = async (req: Request, res: Response) => {
   const { email, first_name, last_name, address } = req.body; 
+    if (!email || !first_name || !last_name || !address) {
+    res.status(400).send("All fields are required");
+    }
   try {
     let result = await db.query(
       `INSERT INTO public.constituents (email, first_name, last_name, address) VALUES ($1, $2, $3, $4)
@@ -30,6 +33,7 @@ export const addConstituent = async (req: Request, res: Response) => {
 
 export const updateConstituent = async (req: Request, res: Response) => {
     const { id } = req.params;
+    if(!id) res.status(400).send("ID is required");
     const { email, first_name, last_name, address } = req.body;
     try {
         let result = await db.query(
@@ -44,6 +48,7 @@ export const updateConstituent = async (req: Request, res: Response) => {
 
 export const deleteConstituent = async (req: Request, res: Response) => {
     const { id } = req.params;
+    if(!id) res.status(400).send("ID is required");
     try {
         let result = await db.query(
         `DELETE FROM public.constituents WHERE id = $1;`,

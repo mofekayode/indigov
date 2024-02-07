@@ -15,7 +15,7 @@ const uploadCSV = async (req, res) => {
         const jsonData = [];
         fs.createReadStream(filePath)
             .pipe((0, fast_csv_1.parse)({ headers: true }))
-            .on('error', (error) => { throw new Error(error); })
+            .on('error', (error) => { throw new Error(String(error)); })
             .on('data', (row) => jsonData.push(row))
             .on('end', async () => {
             fs.unlinkSync(filePath);

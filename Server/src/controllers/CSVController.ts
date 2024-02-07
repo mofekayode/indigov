@@ -4,6 +4,12 @@ import { Parser } from 'json2csv';
 import * as fs from 'fs';
 import { parse } from 'fast-csv';
 
+type constituentType = { 
+    email: string,
+    first_name: string,
+    last_name: string,
+    address: string
+  }
 
 export const uploadCSV = async (req: Request, res: Response) => {
     try {
@@ -13,12 +19,12 @@ export const uploadCSV = async (req: Request, res: Response) => {
         }
     
         const filePath: string = req.file.path;
-        const jsonData: Array<any> = [];
+        const jsonData: constituentType[] = [];
     
         fs.createReadStream(filePath)
             .pipe(parse({ headers: true }))
-            .on('error', (error: any) => {throw new Error(error);})
-            .on('data', (row: object) => jsonData.push(row))
+            .on('error', (error: Error) => {throw new Error(String(error));})
+            .on('data', (row: constituentType) => jsonData.push(row))
             .on('end', async () => {
                 fs.unlinkSync(filePath); 
                 const filteredData = jsonData.filter(row => 

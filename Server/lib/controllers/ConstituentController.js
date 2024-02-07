@@ -15,6 +15,9 @@ const getConstituents = async (_, res) => {
 exports.getConstituents = getConstituents;
 const addConstituent = async (req, res) => {
     const { email, first_name, last_name, address } = req.body;
+    if (!email || !first_name || !last_name || !address) {
+        res.status(400).send("All fields are required");
+    }
     try {
         let result = await index_1.db.query(`INSERT INTO public.constituents (email, first_name, last_name, address) VALUES ($1, $2, $3, $4)
  ON CONFLICT (email) DO UPDATE SET first_name = EXCLUDED.first_name, last_name = EXCLUDED.last_name, address = EXCLUDED.address
@@ -28,6 +31,8 @@ const addConstituent = async (req, res) => {
 exports.addConstituent = addConstituent;
 const updateConstituent = async (req, res) => {
     const { id } = req.params;
+    if (!id)
+        res.status(400).send("ID is required");
     const { email, first_name, last_name, address } = req.body;
     try {
         let result = await index_1.db.query(`UPDATE public.constituents SET email = $1, first_name = $2, last_name = $3, address = $4 WHERE id = $5 RETURNING *;`, [email, first_name, last_name, address, id]);
@@ -40,6 +45,8 @@ const updateConstituent = async (req, res) => {
 exports.updateConstituent = updateConstituent;
 const deleteConstituent = async (req, res) => {
     const { id } = req.params;
+    if (!id)
+        res.status(400).send("ID is required");
     try {
         let result = await index_1.db.query(`DELETE FROM public.constituents WHERE id = $1;`, [id]);
         res.status(200).json(result.rows[0]);
