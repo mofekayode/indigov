@@ -185,20 +185,26 @@ export default function Home() {
       accessorKey: "edit",
       header: "Edit",
       cell: ({ row }) => {
-        let data:ConstituentType ={
+        let data: ConstituentType = {
           id: row.getValue("id"),
           created_at: row.getValue("created_at"),
           first_name: row.getValue("first_name"),
           last_name: row.getValue("last_name"),
           email: row.getValue("email"),
           address: row.getValue("address"),
-        }
-        return <div>
-        <EditConstituentForm data={data} cb={getConsituents} authenticationToken={authenticationToken}/>
-       
-      </div>}
-    }
-  ]
+        };
+        return (
+          <div>
+            <EditConstituentForm
+              data={data}
+              cb={getConsituents}
+              authenticationToken={authenticationToken}
+            />
+          </div>
+        );
+      },
+    },
+  ];
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setUploading(true);
     const file = e.target.files && e.target.files[0];
@@ -236,9 +242,7 @@ export default function Home() {
     }
   };
 
-
-
-  if (loading&&!uploading) {
+  if (loading && !uploading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="">
@@ -267,48 +271,49 @@ export default function Home() {
         </h2>
 
         <div className="flex items-center space-x-2">
-        <Button onClick={handleConstituentDownload}>
+          <Button onClick={handleConstituentDownload}>
             Download Constituents
           </Button>
           <div>
-          <label
-                    htmlFor="file-upload"
-                    className="relative cursor-pointer rounded-md p-3 bg-gray-100"
-                  >
-                    <span>Upload Constituents</span>
-                    <input
-                      id="file-upload"
-                      name="file-upload"
-                      type="file"
-                      className="sr-only"
-                      accept=".csv"
-                      onChange={handleFileUpload}
-                    />
-                  </label>
-            
+            <label
+              htmlFor="file-upload"
+              className="relative cursor-pointer rounded-md p-3 bg-gray-100"
+            >
+              <span>Upload Constituents</span>
+              <input
+                id="file-upload"
+                name="file-upload"
+                type="file"
+                className="sr-only"
+                accept=".csv"
+                onChange={handleFileUpload}
+              />
+            </label>
           </div>
-        
-          <Sheet  
-          open={addOpen}
+
+          <Sheet
+            open={addOpen}
             onOpenChange={() => {
               setAddOpen((curr) => !curr);
-            }}>
-              <SheetTrigger>
-                <Button
-                  variant="outline"
-                >
-                  <PlusCircledIcon className="mr-2 h-4 w-4" />
-                  Add Constituent
-                </Button>
-                </SheetTrigger>
-                <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>Add constituents</SheetTitle>
-                </SheetHeader>
-                <AddConstituentForm setOpen={setAddOpen} cb={getConsituents} authenticationToken={authenticationToken}/>
-              </SheetContent>
-
-            </Sheet>
+            }}
+          >
+            <SheetTrigger>
+              <Button variant="outline">
+                <PlusCircledIcon className="mr-2 h-4 w-4" />
+                Add Constituent
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Add constituents</SheetTitle>
+              </SheetHeader>
+              <AddConstituentForm
+                setOpen={setAddOpen}
+                cb={getConsituents}
+                authenticationToken={authenticationToken}
+              />
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
       {!loading && constituents?.length === 0 && (
@@ -348,13 +353,12 @@ export default function Home() {
           <DataTable
             data={constituents}
             columns={ConstituentColumns}
-            filterVariable={'first_name'}
+            filterVariable={"first_name"}
           />
         ) : (
           <Skeleton className="w-full h-[600px]" />
         )}
       </div>
-
     </main>
   );
 }

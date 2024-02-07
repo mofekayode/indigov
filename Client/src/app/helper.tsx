@@ -44,19 +44,19 @@ export const getConstituents = async (authenticationToken: string | null) => {
   }
 };
 
-export const getAutocompleteLocations = (query:string) => {
-    const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
-    fetch(
-      `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${query}key=${API_KEY}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        let finalData = data.predictions.map((prediction:any) => {
-          const address = prediction.structured_formatting.secondary_text;
-          return {
-            address,
-          };
-        });
-        return finalData;
+export const getAutocompleteLocations = (query: string) => {
+  const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+  fetch(
+    `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${query}key=${API_KEY}`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      let finalData = data.predictions.map((prediction: any) => {
+        const address = prediction.structured_formatting.secondary_text;
+        return {
+          address,
+        };
       });
-  };
+      return finalData;
+    });
+};
