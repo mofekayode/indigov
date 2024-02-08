@@ -30,7 +30,7 @@ const authenticateToken = (req, res, next) => {
 };
 const corsOptions = {
     origin: function (origin, callback) {
-        const allowedOrigins = ['https://indigov-client-ejdcoplsj-mofekayode.vercel.app', 'https://indigov-client-ewmnc1s6c-mofekayode.vercel.app'];
+        const allowedOrigins = ['https://indigov-client.vercel.app'];
         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true);
         }
