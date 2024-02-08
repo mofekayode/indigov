@@ -48,16 +48,21 @@ export default function Home() {
     getSession();
     if (authenticationToken) getConsituents();
   }, [authenticationToken]);
+
   const getSession = async () => {
     const JWT =
       (await supabase.auth.getSession()).data.session?.access_token || null;
     setAuthenticationToken(JWT);
   };
+
   const getConsituents = async () => {
-    setLoading(true);
     const { data, error } = await getConstituents(authenticationToken);
     if (error) {
       console.error(error);
+      toast({
+        description: error,
+        variant: "destructive",
+      });
     } else {
       setConstituents(data);
     }
