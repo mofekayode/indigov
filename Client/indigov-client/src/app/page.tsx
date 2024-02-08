@@ -105,7 +105,7 @@ export default function Home() {
       ),
     },
     {
-      accessorKey: "created_at",
+      accessorKey: "created_at_time",
       header: ({ column }) => {
         return (
           <Button

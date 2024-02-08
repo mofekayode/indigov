@@ -20,8 +20,8 @@ const addConstituent = async (req, res) => {
     }
     try {
         let result = await index_1.db.query(`INSERT INTO public.constituents (email, first_name, last_name, address) VALUES ($1, $2, $3, $4)
- ON CONFLICT (email) DO UPDATE SET first_name = EXCLUDED.first_name, last_name = EXCLUDED.last_name, address = EXCLUDED.address
- RETURNING *;`, [email, first_name, last_name, address]);
+       ON CONFLICT (email) DO UPDATE SET first_name = EXCLUDED.first_name, last_name = EXCLUDED.last_name, address = EXCLUDED.address
+       RETURNING *;`, [email, first_name, last_name, address]);
         res.status(200).json(result.rows[0]);
     }
     catch (error) {
