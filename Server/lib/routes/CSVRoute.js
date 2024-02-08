@@ -7,6 +7,6 @@ const multer = require("multer");
 const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
 exports.CSVRoute = router;
-router.post("/upload", upload.single('file'), controllers_1.uploadCSV);
+router.post("/upload", upload.single('file'), controllers_1.uploadCSV2);
 router.get("/download", controllers_1.downloadCSV);
 //# sourceMappingURL=CSVRoute.js.map
