@@ -279,7 +279,7 @@ export default function Home() {
               htmlFor="file-upload"
               className="relative cursor-pointer rounded-md p-3 bg-gray-100"
             >
-              <span>Upload Constituents</span>
+              <span className="text-black dark:text-white">Upload Constituents</span>
               <input
                 id="file-upload"
                 name="file-upload"
