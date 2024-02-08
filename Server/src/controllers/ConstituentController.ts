@@ -4,7 +4,7 @@ import { db } from "../index";
 export const getConstituents = async (_: Request, res: Response) => {
   try {
     let result = await db.query(
-      `SELECT * FROM public.constituents ORDER BY created_at DESC;;
+      `SELECT * FROM public.constituents ORDER BY created_at DESC;
         `
     );
     res.status(200).json(result.rows);

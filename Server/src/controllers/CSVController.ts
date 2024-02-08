@@ -54,7 +54,7 @@ export const uploadCSV = async (req: Request, res: Response) => {
 };
 export const downloadCSV = async (_: Request, res: Response) => {
     try {
-        const result = await db.query(`SELECT * FROM public.constituents;`);
+        const result = await db.query(`SELECT * FROM public.constituents ORDER BY created_at DESC;`);
         const parser = new Parser();
         const csv = parser.parse(result.rows); 
     

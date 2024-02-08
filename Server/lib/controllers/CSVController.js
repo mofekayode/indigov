@@ -41,7 +41,7 @@ const uploadCSV = async (req, res) => {
 exports.uploadCSV = uploadCSV;
 const downloadCSV = async (_, res) => {
     try {
-        const result = await index_1.db.query(`SELECT * FROM public.constituents;`);
+        const result = await index_1.db.query(`SELECT * FROM public.constituents ORDER BY created_at DESC;`);
         const parser = new json2csv_1.Parser();
         const csv = parser.parse(result.rows);
         res.header('Content-Type', 'text/csv');
